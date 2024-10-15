@@ -3,10 +3,8 @@ export default class Ilha2 {
         this.background = new Image("assets/fudo/background2.png", VRAM);
         this.transitionArea = { x: 0, y: 0, width: 0, height: 0 };
 
-        // Definindo as áreas de colisão para Ilha 2
         this.collisionAreas = [
             { x: 0, y: 0, width: 0, height: 0 },
-            // Adicione mais áreas de colisão conforme necessário
         ];
     }
 
@@ -30,9 +28,9 @@ export default class Ilha2 {
                 playerX + playerWidth > area.x &&
                 playerY < area.y + area.height &&
                 playerY + playerHeight > area.y) {
-                return true; // Colisão detectada
+                return true;
             }
         }
-        return false; // Sem colisão
+        return false;
     }
 }

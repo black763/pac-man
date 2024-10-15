@@ -1,17 +1,12 @@
 export default class NPC {
-    constructor(x, y, z, scenario, speed = 2) { // Reduzida a velocidade padrão para 2
+    constructor(x, y, z, scenario, speed = 2) {
         this.x = x || 232;
         this.y = y || 319;
         this.z = z || 20;
         this.scenario = scenario;
         this.speed = speed;
 
-        // Definindo os sprites dos fantasmas
         this.sprites = {
-            idle: [
-                new Image("assets/npc/ghost_idle_1.png", RAM),
-                new Image("assets/npc/ghost_idle_2.png", RAM)
-            ],
             left: [
                 new Image("assets/npc/ghost_left_1.png", RAM),
                 new Image("assets/npc/ghost_left_2.png", RAM)
@@ -30,46 +25,73 @@ export default class NPC {
             ]
         };
 
-        this.currentAnimation = this.sprites.idle;
+        this.currentAnimation = this.sprites.left;
         this.currentFrame = 0;
         this.frameCounter = 0;
-        this.frameSpeed = 10; // Controla a velocidade da animação
+        this.frameSpeed = 10;
 
-        // Direção inicial do movimento
-        this.direction = 'left';
+        this.lastDirection = null; // Última direção que tentou seguir
     }
 
-    // Movimenta o NPC baseado em uma lógica simples
     moveNPC(playerX, playerY) {
-        // A lógica segue o jogador
-        let deltaX = playerX - this.x;
-        let deltaY = playerY - this.y;
+        // Possíveis direções e seus deslocamentos
+        let directions = [
+            { dir: 'left', dx: -this.speed, dy: 0 },
+            { dir: 'right', dx: this.speed, dy: 0 },
+            { dir: 'up', dx: 0, dy: -this.speed },
+            { dir: 'down', dx: 0, dy: this.speed }
+        ];
 
-        // Calcula a distância
-        let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        // Ordena por menor distância até o jogador
+        directions.sort((a, b) => {
+            let distA = Math.hypot(playerX - (this.x + a.dx), playerY - (this.y + a.dy));
+            let distB = Math.hypot(playerX - (this.x + b.dx), playerY - (this.y + b.dy));
+            return distA - distB;
+        });
 
-        // Movimenta o NPC em direção ao jogador se estiver distante
-        if (distance > 0) {
-            let moveX = (deltaX / distance) * this.speed;
-            let moveY = (deltaY / distance) * this.speed;
+        // Tenta se mover na melhor direção possível
+        let moved = false;
+        for (let { dir, dx, dy } of directions) {
+            let newX = this.x + dx;
+            let newY = this.y + dy;
 
-            let newX = this.x + moveX;
-            let newY = this.y + moveY;
-
-            // Verifica colisão antes de mover
-            if (!this.scenario.checkCollision(newX, this.y, this.z, this.z)) {
+            if (!this.scenario.checkCollision(newX, newY, this.z, this.z)) {
                 this.x = newX;
-                this.currentAnimation = moveX < 0 ? this.sprites.left : this.sprites.right;
-            }
-
-            if (!this.scenario.checkCollision(this.x, newY, this.z, this.z)) {
                 this.y = newY;
-                this.currentAnimation = moveY < 0 ? this.sprites.up : this.sprites.down;
+                this.currentAnimation = this.sprites[dir];
+                this.lastDirection = { dx, dy }; // Armazena a última direção
+                moved = true;
+                break;
             }
         }
 
-        // Atualiza o frame da animação
+        // Se não conseguiu se mover, tenta uma movimentação aleatória
+        if (!moved) {
+            this.randomMove();
+        }
+
         this.updateAnimationFrame();
+    }
+
+    randomMove() {
+        const randomDirections = [
+            { dx: -this.speed, dy: 0, sprite: this.sprites.left },
+            { dx: this.speed, dy: 0, sprite: this.sprites.right },
+            { dx: 0, dy: -this.speed, sprite: this.sprites.up },
+            { dx: 0, dy: this.speed, sprite: this.sprites.down }
+        ];
+
+        // Escolhe uma direção aleatória
+        const random = randomDirections[Math.floor(Math.random() * randomDirections.length)];
+        const newX = this.x + random.dx;
+        const newY = this.y + random.dy;
+
+        // Verifica colisão antes de se mover
+        if (!this.scenario.checkCollision(newX, newY, this.z, this.z)) {
+            this.x = newX;
+            this.y = newY;
+            this.currentAnimation = random.sprite;
+        }
     }
 
     updateAnimationFrame() {

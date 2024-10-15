@@ -2,12 +2,10 @@ export default class Ilha1 {
     constructor() {
         this.background = new Image("assets/fudo/background.png", VRAM);
 
-        // Áreas de transição para trocar de cenário
         this.transitionAreas = [
-            { x: 0, y: 0, width: 0, height: 0, nextScenario: 'Ilha2' }, // Transição para Ilha2
+            { x: 0, y: 0, width: 0, height: 0, nextScenario: 'Ilha2' },
         ];
 
-        // Definindo as áreas de colisão para Ilha 1
         this.collisionAreas = [
             { x: 255, y: 95, width: 131, height: 14 },
             { x: 311, y: 109, width: 19, height: 45 },
@@ -69,17 +67,16 @@ export default class Ilha1 {
         this.background.draw(0, 0);
     }
 
-    // Verifica qual transição deve ocorrer
     checkTransition(playerX, playerY) {
         for (let area of this.transitionAreas) {
             if (playerX > area.x &&
                 playerX < area.x + area.width &&
                 playerY > area.y &&
                 playerY < area.y + area.height) {
-                return area.nextScenario; // Retorna o próximo cenário
+                return area.nextScenario;
             }
         }
-        return null; // Sem transição
+        return null;
     }
 
     checkCollision(playerX, playerY, playerWidth, playerHeight) {
@@ -88,9 +85,9 @@ export default class Ilha1 {
                 playerX + playerWidth > area.x &&
                 playerY < area.y + area.height &&
                 playerY + playerHeight > area.y) {
-                return true; // Colisão detectada
+                return true;
             }
         }
-        return false; // Sem colisão
+        return false;
     }
 }

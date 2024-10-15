@@ -2,7 +2,6 @@ import Efeitos from './efeitos.js';
 
 export default class Pontos {
     constructor() {
-        // Definir os pontos com suas coordenadas e tamanhos
         this.pontos = [
             { x: 82, y: 431, width: 8, height: 8 },
             { x: 96, y: 431, width: 8, height: 8 },
@@ -328,7 +327,6 @@ export default class Pontos {
             { x: 144, y: 121, width: 8, height: 8 },
             { x: 155, y: 121, width: 8, height: 8 },
             { x: 167, y: 121, width: 8, height: 8 },
-            // Adicione mais pontos conforme necessário
         ];
 
         // Carregar a imagem do ponto
@@ -345,35 +343,30 @@ export default class Pontos {
         }
     }
 
-    // Verifica se um jogador comeu um ponto
     checkCollision(playerX, playerY, playerWidth, playerHeight) {
         for (let i = this.pontos.length - 1; i >= 0; i--) {
             let ponto = this.pontos[i];
-            // Verifica se o jogador colidiu com o ponto
             if (
                 playerX < ponto.x + ponto.width &&
                 playerX + playerWidth > ponto.x &&
                 playerY < ponto.y + ponto.height &&
                 playerY + playerHeight > ponto.y
             ) {
-                // Remove o ponto da lista quando colidido
                 this.pontos.splice(i, 1);
 
                 // Toca o efeito sonoro
                 this.efeitos.playEfeito();
                 
-                return true; // Indica que o ponto foi comido
+                return true;
             }
         }
-        return false; // Nenhum ponto foi comido
+        return false;
     }
 
-    // Verificar se todos os pontos foram comidos
     allPontosComidos() {
         return this.pontos.length === 0;
     }
 
-    // Reinicia os pontos para a nova fase
     resetPontos() {
         this.pontos = [
             { x: 82, y: 431, width: 8, height: 8 },
@@ -700,7 +693,6 @@ export default class Pontos {
             { x: 144, y: 121, width: 8, height: 8 },
             { x: 155, y: 121, width: 8, height: 8 },
             { x: 167, y: 121, width: 8, height: 8 },
-            // Adicione os novos pontos da nova fase aqui
         ];
     }
 }

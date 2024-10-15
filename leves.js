@@ -1,15 +1,14 @@
-// leves.js
+// class fases.js
 export default class Fases {
     constructor(player, npcs) {
         this.player = player;
         this.npcs = npcs;
         this.currentLevel = 1;
         this.maxLevels = 10;
-        this.speedIncreaseFactor = 0.5; // Aumento da velocidade
-        this.levelSpeed = 3; // Velocidade inicial
+        this.speedIncreaseFactor = 0.1; // Aumento da velocidade
+        this.levelSpeed = 2; // Velocidade inicial
     }
 
-    // Método para atualizar a fase
     updateLevel() {
         if (this.currentLevel < this.maxLevels) {
             this.currentLevel++;
