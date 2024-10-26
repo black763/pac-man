@@ -4,4 +4,7 @@ Opa eai galera mais um novo projeto  para o nosso querido ps2 esse novo projeto 
 Esse projeto foi feito com a engine AthenaEnv e muito obrigado Daniel Santos se não fosse a simplicidade do seu projeto nunca eu conseguiria fazer esse projeto valeu.
 
 # como controlar                                                                                                                                                                  
-para controla o pac-man você usa o analogico esquerdo do controle.
+Para controla o pac-man você usa o analogico esquerdo do controle.
+
+# importante
+No ps2 original está funcionando perfeitamente mais no emulando não tenho setesa que está funcionando.
