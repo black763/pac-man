@@ -48,15 +48,14 @@ export default class Player {
         this.frameCounter = 0;
         this.frameSpeed = 4;
 
-        // Controle de morte e reinício
         this.isAlive = true;
         this.isRespawning = false;
-        this.continueText = new Image("assets/mensagens/continue.png", RAM); // Imagem "Continuar"
-        this.gameOverText = new Image("assets/mensagens/gameover.png", RAM); // Imagem "Game Over"
+        this.continueText = new Image("assets/mensagens/continue.png", RAM);
+        this.gameOverText = new Image("assets/mensagens/gameover.png", RAM);
     }
 
     movePlayer() {
-        if (!this.isAlive || this.isRespawning) return; // Se o jogador está morto ou em respawn, ele não se move
+        if (!this.isAlive || this.isRespawning) return;
 
         const Pad = Pads.get(this.controller);
         let newX = this.x;
@@ -64,25 +63,21 @@ export default class Player {
 
         this.currentAnimation = this.sprites.idle;
 
-        // Movimento para a esquerda
         if ((Pad.lx < -25 || Pad.left) && !this.scenario.checkCollision(newX - 5, this.y, this.z, this.z)) {
             newX -= 3;
             this.currentAnimation = this.sprites.left;
         }
 
-        // Movimento para a direita
         if ((Pad.lx > 25 || Pad.right) && !this.scenario.checkCollision(newX + 5, this.y, this.z, this.z)) {
             newX += 3;
             this.currentAnimation = this.sprites.right;
         }
 
-        // Movimento para cima
         if ((Pad.ly < -25 || Pad.up) && !this.scenario.checkCollision(this.x, newY - 5, this.z, this.z)) {
             newY -= 3;
             this.currentAnimation = this.sprites.up;
         }
 
-        // Movimento para baixo
         if ((Pad.ly > 25 || Pad.down) && !this.scenario.checkCollision(this.x, newY + 5, this.z, this.z)) {
             newY += 3;
             this.currentAnimation = this.sprites.down;
@@ -111,7 +106,6 @@ export default class Player {
             this.currentAnimation[this.currentFrame].draw(this.x, this.y);
         }
 
-        // Desenha as vidas restantes
         this.drawLives();
 
         if (this.isRespawning) {
@@ -134,7 +128,7 @@ export default class Player {
     }
 
     checkCollisionWithGhost(ghost) {
-        if (!this.isAlive) return; // Se o jogador já está morto, não verifica mais colisão
+        if (!this.isAlive) return;
 
         const playerLeft = this.x;
         const playerRight = this.x + this.z;
@@ -158,10 +152,10 @@ export default class Player {
     }
 
     die() {
-        this.isAlive = false; // Marca o jogador como morto
-        this.currentAnimation = this.sprites.death; // Troca para a animação de morte
-        this.currentFrame = 0; // Reinicia a animação de morte
-        this.lives--; // Diminui uma vida
+        this.isAlive = false;
+        this.currentAnimation = this.sprites.death;
+        this.currentFrame = 0;
+        this.lives--;
 
         if (this.lives > 0) {
             this.isRespawning = true;
@@ -183,7 +177,7 @@ export default class Player {
 
     respawn() {
         if (this.lives > 0) {
-            this.isAlive = true; // Revive o jogador
+            this.isAlive = true;
             this.isRespawning = false;
             this.x = 309; 
             this.y = 65;

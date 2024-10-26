@@ -30,11 +30,10 @@ export default class NPC {
         this.frameCounter = 0;
         this.frameSpeed = 10;
 
-        this.lastDirection = null; // Última direção que tentou seguir
+        this.lastDirection = null;
     }
 
     moveNPC(playerX, playerY) {
-        // Possíveis direções e seus deslocamentos
         let directions = [
             { dir: 'left', dx: -this.speed, dy: 0 },
             { dir: 'right', dx: this.speed, dy: 0 },
@@ -42,14 +41,12 @@ export default class NPC {
             { dir: 'down', dx: 0, dy: this.speed }
         ];
 
-        // Ordena por menor distância até o jogador
         directions.sort((a, b) => {
             let distA = Math.hypot(playerX - (this.x + a.dx), playerY - (this.y + a.dy));
             let distB = Math.hypot(playerX - (this.x + b.dx), playerY - (this.y + b.dy));
             return distA - distB;
         });
 
-        // Tenta se mover na melhor direção possível
         let moved = false;
         for (let { dir, dx, dy } of directions) {
             let newX = this.x + dx;
@@ -59,13 +56,12 @@ export default class NPC {
                 this.x = newX;
                 this.y = newY;
                 this.currentAnimation = this.sprites[dir];
-                this.lastDirection = { dx, dy }; // Armazena a última direção
+                this.lastDirection = { dx, dy };
                 moved = true;
                 break;
             }
         }
 
-        // Se não conseguiu se mover, tenta uma movimentação aleatória
         if (!moved) {
             this.randomMove();
         }
@@ -81,12 +77,10 @@ export default class NPC {
             { dx: 0, dy: this.speed, sprite: this.sprites.down }
         ];
 
-        // Escolhe uma direção aleatória
         const random = randomDirections[Math.floor(Math.random() * randomDirections.length)];
         const newX = this.x + random.dx;
         const newY = this.y + random.dy;
 
-        // Verifica colisão antes de se mover
         if (!this.scenario.checkCollision(newX, newY, this.z, this.z)) {
             this.x = newX;
             this.y = newY;

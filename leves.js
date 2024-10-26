@@ -29,12 +29,10 @@ export default class Fases {
         });
     }
 
-    // Retorna a fase atual
     getCurrentLevel() {
         return this.currentLevel;
     }
 
-    // Verifica se todas as fases foram completadas
     isGameComplete() {
         return this.currentLevel >= this.maxLevels;
     }
