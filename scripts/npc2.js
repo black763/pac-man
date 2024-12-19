@@ -1,4 +1,4 @@
-export default class NPC {
+export default class NPC2 {
     constructor(x, y, z, scenario, speed = 2, personality = 'chase') {
         this.startX = x;
         this.startY = y; 
@@ -11,24 +11,24 @@ export default class NPC {
         
         this.sprites = {
             idle: [
-                new Image("assets/npcs/ghost_idle_1.png", RAM),
-                new Image("assets/npcs/ghost_idle_2.png", RAM)
+                new Image("assets/npcs/idle_1.png", RAM),
+                new Image("assets/npcs/idle_2.png", RAM)
             ],
             left: [
-                new Image("assets/npcs/ghost_left_1.png", RAM),
-                new Image("assets/npcs/ghost_left_2.png", RAM)
+                new Image("assets/npcs/left_1.png", RAM),
+                new Image("assets/npcs/left_2.png", RAM)
             ],
             right: [
-                new Image("assets/npcs/ghost_right_1.png", RAM),
-                new Image("assets/npcs/ghost_right_2.png", RAM)
+                new Image("assets/npcs/right_1.png", RAM),
+                new Image("assets/npcs/right_2.png", RAM)
             ],
             up: [
-                new Image("assets/npcs/ghost_up_1.png", RAM),
-                new Image("assets/npcs/ghost_up_2.png", RAM)
+                new Image("assets/npcs/up_1.png", RAM),
+                new Image("assets/npcs/up_2.png", RAM)
             ],
             down: [
-                new Image("assets/npcs/ghost_down_1.png", RAM),
-                new Image("assets/npcs/ghost_down_2.png", RAM)
+                new Image("assets/npcs/down_1.png", RAM),
+                new Image("assets/npcs/down_2.png", RAM)
             ]
         };
 
@@ -79,6 +79,7 @@ export default class NPC {
     
         this.updateAnimationFrame();
     }
+    
 
     moveTowardsPlayer(playerX, playerY) {
         const directions = this.getSortedDirections(playerX, playerY);

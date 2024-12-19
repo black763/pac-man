@@ -50,8 +50,8 @@ export default class Player {
 
         this.isAlive = true;
         this.isRespawning = false;
-        this.continueText = new Image("assets/mensagens/continue.png", RAM);
-        this.gameOverText = new Image("assets/mensagens/gameover.png", RAM);
+        this.continueText = new Image("assets/mensagens/continue.png", RAM); 
+        this.gameOverText = new Image("assets/mensagens/gameover.png", RAM); 
     }
 
     movePlayer() {
@@ -109,23 +109,26 @@ export default class Player {
         this.drawLives();
 
         if (this.isRespawning) {
-            this.continueText.draw(268, 249);
+            this.continueText.draw(272, 188);
         }
 
         if (this.isGameOver) {
-            this.gameOverText.draw(263, 246);
+            this.gameOverText.draw(269, 186);
         }
     }
 
     drawLives() {
         for (let i = 0; i < this.lives; i++) {
-            this.sprites.life.draw(1 + i * 27, 2);
+            this.sprites.life.draw(460 + i * 27, 20);
         }
     }
 
     checkCollisionWithPoints() {
-        this.pontos.checkCollision(this.x, this.y, this.z, this.z);
-    }
+        if (this.pontos.checkCollision(this.x, this.y, this.z, this.z)) {
+            return true;
+        }
+        return false;
+    }    
 
     checkCollisionWithGhost(ghost) {
         if (!this.isAlive) return;
@@ -156,32 +159,49 @@ export default class Player {
         this.currentAnimation = this.sprites.death;
         this.currentFrame = 0;
         this.lives--;
-
+    
         if (this.lives > 0) {
             this.isRespawning = true;
         } else {
             this.isGameOver = true;
         }
     }
-
+    
+    
     checkContinue() {
-        if (this.isRespawning) {
-            const pad = Pads.get(this.controller);
-            if (pad.justPressed(Pads.START)) {
-                this.respawn();
-            }
-        } else if (this.isGameOver) {
-            this.gameOverText.draw(226, 198);
+        const pad = Pads.get(this.controller);
+    
+        if (this.isRespawning && pad.justPressed(Pads.START)) {
+            this.respawn();
         }
     }
+
+    checkGameOver() {
+        const pad = Pads.get(this.controller);
+    
+        if (this.isGameOver) {
+            this.gameOverText.draw(269, 186);
+        }
+    }    
 
     respawn() {
         if (this.lives > 0) {
             this.isAlive = true;
             this.isRespawning = false;
-            this.x = 309; 
-            this.y = 65;
+            this.x = 313; 
+            this.y = 337;
             this.currentAnimation = this.sprites.idle;
         }
     }
+
+    reset() {
+        this.lives = 3;
+        this.isAlive = true;
+        this.isRespawning = false;
+        this.isGameOver = false;
+        this.x = 313;
+        this.y = 337;
+        this.currentAnimation = this.sprites.idle;
+    }
+    
 }
